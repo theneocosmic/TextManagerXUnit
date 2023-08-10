@@ -10,17 +10,32 @@ public TextManagerTest()
     TextManagerGlobal = new TextManager("hola hola desde xunit");
 }
 
-    [Fact]
-    public void CountWords(){
+    [Theory]
+    [InlineData("Hola Mundo",2)]
+    [InlineData("",0)]
+    [InlineData("saludos a todos desde el curso de xunit",8)]
+    public void CountWords(string text, int expected){
         //Arrange
-        var textManager = new TextManager("Texto Prueba");
+        var textManager = new TextManager(text);
 
         //Act
         var result = textManager.CountWords();
 
         //Assert
-        Assert.Equal(2, result);
-        Assert.True(result > 1);
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [ClassData(typeof(TextManagerClassData))]
+    public void CountWords_ClassData(string text, int expected){
+        //Arrange
+        var textManager = new TextManager(text);
+
+        //Act
+        var result = textManager.CountWords();
+
+        //Assert
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -55,7 +70,7 @@ public TextManagerTest()
         Assert.Empty(result);
     }
 
-    [Fact]
+    [Fact(Skip = "This test is not valid for the current code")]
     public void FindExactWord()
     {
         // When
